@@ -99,6 +99,7 @@ for genotype = genotypesToDisplay
 end
 
 %% Plot by the scan type (FA, MD, T2)
+% Plots the normalized data (normed by the first scan)
 segregatedMiceByType = extractRelevantMiceByScan(typesToDisplay, genotypesToDisplay, ...
                                                  segregatedMice);
 idx = 1;
