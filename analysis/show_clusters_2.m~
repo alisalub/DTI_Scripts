@@ -1,9 +1,11 @@
-cluster_nii = load_untouch_nii('WT_VS_KO_16mice_p_main_interaction_MD_FDR_MDcluster10.nii');
+close all
+cluster_nii = load_untouch_nii('WT_VS_KO_16mice_p_main_Within_scan1_5_FA_FDR_MDcluster10.nii');
 fa_nii = load_untouch_nii('Mean_FA.nii');
 cluster_map = cluster_nii.img;
 fa_map = fa_nii.img;
 for cluster=1:max(cluster_map(:))
 figure
+
 mask = cluster_map == cluster;
 linear_index = find (mask);
 [x,y,z] = ind2sub(size(mask),linear_index);
@@ -28,8 +30,13 @@ subplot(1,3,3)
 imshow(imoverlay(z_map,z_mask,[1 0 1]));
 title(['Z slice: ' num2str(z_slice)])
 
-% suptitle(['Cluster #' num2str(cluster)])
 
+text(-110, -80,['ClusterNumber_' num2str(cluster)],'HorizontalAlignment','center','VerticalAlignment', 'top')
+
+ temp=['cluster_' ,num2str(cluster),'_','Within_FA.png']; 
+ saveas(gca,temp)
 drawnow
+
+
 end
 

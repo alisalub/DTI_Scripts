@@ -1,31 +1,32 @@
 function plotScanTypeMiceVector(segMice, genotypesToDisplay, scanType)
-% Plot the normalized data by scan type
+% Plots an error bar with the scatter plot of every scan type for each
+% mouse
 
-    % Figure set ups
+    %% Generate color scheme
+    all_colors = distinguishable_colors(40); 
+    chosen_colors = all_colors([6, 40, 30], :);
+    
+    %%
     numOfScans = 5;
     figure;
     xlabel('Scan Number');
-    ylabel(['Normalized ' scanType]);
-    colors = {'r', 'b', 'k'};
+    ylabel(scanType);
     hold all;
     genotype_idx = 1;
     for genotype = genotypesToDisplay
         data = segMice.(scanType)(genotype{1});
         if ~isempty(data)
-            % Normalize current data by the first scan
-            firstScanData = data(:, 1);
-            firstScanData = repmat(firstScanData, 1, size(data, 2));
-            dataNormed = data ./ firstScanData;
-            % Caclulate mean on the normed data and plot
-            meanData = mean(dataNormed(:, 1:numOfScans), 1);
-            semData = std(dataNormed(:, 1:numOfScans), 1) ./ size(dataNormed, 1);
-            errorbar(meanData, semData, colors{genotype_idx}, ...
-                'LineWidth',4,...
-                'MarkerSize',7,...
-               'DisplayName', [genotype{1}, '_mean']);
-            xdata = repmat(1:numOfScans, size(dataNormed, 1), 1);
-            plot(xdata, dataNormed(:, 1:numOfScans), [colors{genotype_idx} 'o'], 'Marker', 'd', ...
-                'DisplayName', [genotype{1}, '_raw']);
+            meanData = mean(data(:, 1:numOfScans), 1);
+            semData = std(data(:, 1:numOfScans), 1) ./ size(data, 1);
+            errorbar(meanData, semData, ...
+                     'DisplayName', [genotype{1}, '_mean'], ...
+                     'Color', chosen_colors(genotype_idx, :), ...
+                     'LineWidth', 6);
+            xdata = repmat(1:numOfScans, size(data, 1), 1);
+            plot(xdata, data(:, 1:numOfScans), 'o', ...
+                 'Marker', 'd', ...
+                 'DisplayName', [genotype{1}, '_raw'], ...
+                 'Color', chosen_colors(genotype_idx, :));
         end
         genotype_idx = genotype_idx + 1;
     end

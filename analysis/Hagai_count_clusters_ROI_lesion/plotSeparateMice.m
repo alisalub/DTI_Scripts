@@ -1,6 +1,12 @@
-function plotSeparateMice(data, names, genotype, scanType, numOfScans)
+function er = plotSeparateMice(data, names, genotype, scanType, numOfScans)
     % Create one plot for all mice throughout all scans for each scan type
     % (MD, FA, T2)
+    
+    %% Create color scheme
+    all_colors = distinguishable_colors(40); 
+    chosen_colors = all_colors([6, 40, 30], :);
+    
+    %%
     figure;
     hold on;
     title(['All ' genotype ' Mice']);
@@ -15,10 +21,10 @@ function plotSeparateMice(data, names, genotype, scanType, numOfScans)
         end
         y = [data{mouseNum}.mean];
         y = y(1:numOfScans);
-        %y=y./(y(1)); %% PB - plotting normalized to first scan
         errors = [data{mouseNum}.sem];
         errors = errors(1:numOfScans);
-        errorbar(1:numOfScans, y, errors);        
+        er = errorbar(1:numOfScans, y, errors);
+        er.Color(4) = 0.2;
     end
 
     legend(names);

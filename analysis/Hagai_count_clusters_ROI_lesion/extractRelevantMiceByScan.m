@@ -5,7 +5,7 @@ function returnedTable = extractRelevantMiceByScan(typesToDisplay, genotypesToDi
 
     MAX_NUM_OF_MICE = 7;
     returnedTable = struct();
-    prelimValues = {[], [], []};
+    prelimValues = cell(1, size(genotypesToDisplay, 2));
     for type = typesToDisplay
         returnedTable.(type{1}) = containers.Map(genotypesToDisplay, prelimValues);
     end

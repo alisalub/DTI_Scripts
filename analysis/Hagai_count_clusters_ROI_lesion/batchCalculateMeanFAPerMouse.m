@@ -4,22 +4,21 @@
 % Delete the 'listOfMice' variable if you wish to start over.
 
 %% Parameters
-analyzeGeneralROI = false;  % change to true if you want to work on general ROI
+analyzeGeneralROI = true;  % change to true if you want to work on general ROI or false for different slices or each brain
 numOfMice = 24;
 if analyzeGeneralROI
-    fSlice = 46;
-    lSlice = 53; 
+    fSlice = 44;
+    lSlice = 52;
     FirstSliceVector = repmat(fSlice, 1, numOfMice);
     LastSliceVector = repmat(lSlice, 1, numOfMice);
-else
-    %                   ko                      wt                      sh   
-    FirstSliceVector = [50 46 43 45 43 47 45 52 48 44 46 48 44 45 47 47 46 48 46 46 46 46 46 46];
-    LastSliceVector =  [57 50 48 51 50 51 55 58 58 53 52 53 50 50 50 51 50 51 50 49 49 49 49 49];
+else %filename      [KO 1  2   3  4  5  6  7 8 WT2 3  4  5  6  7  8  9 SH1 2  3  4  5  6  7  8]
+    FirstSliceVector = [50 42 44 45 44 48 46 53 48 45 46 48 45 49 48 48 49 46 46 48 49 48 47 50];
+    LastSliceVector =  [58 50 49 51 49 52 53 57 57 53 52 52 51 54 52 52 53 50 50 52 53 52 51 53];
 end
-workDir = '/Volumes/Data/Alisa/DTI/WSK_allscans_analysis/registered_T2_to_ko51_normalize_smooth_5/';
-typesToParse = {'FA', 'MD', 'T2'};
+workDir = '/Volumes/Data/Alisa/DTI/WSK_allscans_analysis/pi10_register_to_meanFA/register_all_to_meanFA_normalized/register_meanFA_normalized_smoothed_5/';
+typesToParse = {'FA', 'MD'};%, 'T2'};
 genotypesToDisplay = {'KO', 'WT', 'sham'};  % Out of {'KO', 'WT', 'sham'}
-typesToDisplay = {'FA', 'MD', 'T2'};  % Out of {'FA', 'MD', 'T2'};
+typesToDisplay = {'FA', 'MD'};%, 'T2'};  % Out of {'FA', 'MD', 'T2'};
 
 %% Setup result variables
 % Each mouse is a line in listOfMice. This line contains one of three
@@ -44,7 +43,7 @@ else
 end
 
 %% Start going through the dirs
-T2Scans = dir([workDir, '/swrT*_scan2_*T2.nii']);
+T2Scans = dir([workDir, 'swrT*_scan2_*T2.nii']);
 numOfMice = size(T2Scans, 1);
 assert(numOfMice == length(FirstSliceVector))
 
